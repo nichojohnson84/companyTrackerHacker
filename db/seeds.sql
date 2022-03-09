@@ -1,8 +1,8 @@
 INSERT INTO department (name)
-VALUES ("sales");
+VALUES ("Sales");
 	
 INSERT INTO department (name)
-VALUES ("billing");
+VALUES ("Accounting");
 
 INSERT INTO department (name)
 VALUES ("Marketing");
