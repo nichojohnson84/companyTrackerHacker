@@ -1,7 +1,8 @@
-const mysql = require("mysql");
-const mysql2 = require("mysql2");
+const mysql = require("mysql2");
 const inquirer = require("inquirer");
 const db = require("./db/connection");
+
+const PORT = process.env.PORT || 3001;
 
 function start() {
   inquirer
