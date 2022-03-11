@@ -263,8 +263,8 @@ function UpdateEmployeeRoles() {
           name: "choice",
           type: "rawlist",
           choices: function () {
-            var choicesArray = [];
-            for (var i = 0; i < results.length; i++) {
+            let choicesArray = [];
+            for (let i = 0; i < results.length; i++) {
               choicesArray.push(results[i].first_name);
             }
             return choicesArray;
@@ -388,8 +388,8 @@ function deleteRoles() {
           name: "choice",
           type: "rawlist",
           choices: function () {
-            var choicesArray = [];
-            for (var i = 0; i < results.length; i++) {
+            let choicesArray = [];
+            for (let i = 0; i < results.length; i++) {
               choicesArray.push(results[i].title);
             }
             return choicesArray;
