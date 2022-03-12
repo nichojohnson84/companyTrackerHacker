@@ -26,6 +26,8 @@ When you have loaded the programs you will open the regular git bash from the fi
 
 ![Company tracker pic](https://user-images.githubusercontent.com/94770081/158033051-9b42b5a2-6a39-45dd-bf28-8319172bcceb.jpg)
 
+## Video Tutorial
+https://drive.google.com/file/d/1MxUKt7PYFnaRzcICiTMgyUG_ohqPl4if/view
 
 ### What language or programs did you use?
 
