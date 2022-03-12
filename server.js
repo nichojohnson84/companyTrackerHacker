@@ -1,6 +1,6 @@
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
-const db = require("./db/connection");
+const connection = require("./db/connection");
 
 const PORT = process.env.PORT || 3001;
 
@@ -144,7 +144,7 @@ function addEmployee() {
       {
         type: "input",
         name: "firstName",
-        message: "Employee name?",
+        message: "Employee first name?",
       },
       {
         type: "input",
@@ -206,8 +206,7 @@ function viewEmployees() {
 
 function viewEmployeesWithRoleTitle() {
   let query =
-    "SELECT employee.id, employee.first_name, employee.last_name, role.title, employee.manager_id ";
-  query += "FROM employee INNER JOIN role ON (role.id =employee.role_id) ";
+    "SELECT employee.id, employee.first_name, employee.last_name, role.title, employee.manager_id FROM employee INNER JOIN role ON role.id =employee.role_id";
   connection.query(query, function (err, results) {
     if (err) throw err;
     console.table(results);
@@ -216,42 +215,43 @@ function viewEmployeesWithRoleTitle() {
 }
 
 function viewEmployeesByManager() {
-  connection.query(
-    "SELECT manager_id * FROM employee",
-    function (err, results) {
-      if (err) throw err;
-      inquirer
-        .prompt([
-          {
-            name: "choice",
-            type: "rawlist",
-            choices: function () {
-              let choicesArray = [];
-              for (let i = 0; i < results.length; i++) {
+  connection.query("SELECT manager_id FROM employee", function (err, results) {
+    if (err) throw err;
+    console.log(results);
+    inquirer
+      .prompt([
+        {
+          name: "choice",
+          type: "list",
+          choices: function () {
+            let choicesArray = [];
+            for (let i = 0; i < results.length; i++) {
+              if (results[i].manager_id != null) {
                 choicesArray.push(results[i].manager_id);
               }
-              return choicesArray;
-            },
-            messages: "Which Manager do you want to see?",
-          },
-        ])
-        .then(function (answer) {
-          connection.query(
-            "SELECT first_name, last_name, manager_id FROM employee WHERE ?",
-            [
-              {
-                manager_id: answer.choice,
-              },
-            ],
-            function (err, result) {
-              if (err) throw err;
-              console.table(result);
-              start();
             }
-          );
-        });
-    }
-  );
+            console.log(choicesArray);
+            return choicesArray;
+          },
+          message: "Which Manager do you want to see?",
+        },
+      ])
+      .then(function (answer) {
+        connection.query(
+          "SELECT first_name, last_name, manager_id FROM employee WHERE ?",
+          [
+            {
+              manager_id: answer.choice,
+            },
+          ],
+          function (err, result) {
+            if (err) throw err;
+            console.table(result);
+            start();
+          }
+        );
+      });
+  });
 }
 
 function UpdateEmployeeRoles() {
@@ -261,7 +261,7 @@ function UpdateEmployeeRoles() {
       .prompt([
         {
           name: "choice",
-          type: "rawlist",
+          type: "list",
           choices: function () {
             let choicesArray = [];
             for (let i = 0; i < results.length; i++) {
@@ -282,7 +282,7 @@ function UpdateEmployeeRoles() {
           "UPDATE employee SET ? WHERE ?",
           [
             {
-              role_id: answer.UpdateRol,
+              role_id: answer.UpdateRole,
             },
             {
               first_name: answer.choice,
@@ -305,7 +305,7 @@ function UpdateEmployeeManager() {
       .prompt([
         {
           name: "choice",
-          type: "rawlist",
+          type: "list",
           choices: function () {
             let choicesArray = [];
             for (let i = 0; i < results.length; i++) {
@@ -349,7 +349,7 @@ function deleteDepartments() {
       .prompt([
         {
           name: "choice",
-          type: "rawlist",
+          type: "list",
           choices: function () {
             let choicesArray = [];
             for (let i = 0; i < results.length; i++) {
@@ -386,7 +386,7 @@ function deleteRoles() {
       .prompt([
         {
           name: "choice",
-          type: "rawlist",
+          type: "list",
           choices: function () {
             let choicesArray = [];
             for (let i = 0; i < results.length; i++) {
@@ -422,7 +422,7 @@ function deleteEmployees() {
       .prompt([
         {
           name: "choice",
-          type: "rawlist",
+          type: "list",
           choices: function () {
             let choicesArray = [];
             for (let i = 0; i < results.length; i++) {
